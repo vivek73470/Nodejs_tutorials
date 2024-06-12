@@ -1,22 +1,13 @@
-const {Router} = require("express")
+const express = require("express")
+const teacherRouter = express.Router()
 
-const teachers = Router();
-// teachers acting as own instance of server
+teacherRouter.get("/teachers",(req,res)=>{
+    res.send("All students")
+})
 
-teachers.post("/create",(req,res)=>{
-    res.send("create")
-});
+teacherRouter.post("/addteachers",(req,res)=>{
+    console.log(req.body)
+    res.send("added students")
+})
 
-teachers.put("/update",(req,res)=>{
-    res.send("update")
-});
-
-teachers.get("/get",(req,res)=>{
-    res.send("get")
-});
-
-teachers.delete("/delete",(req,res)=>{
-    res.send("delete")
-});
-
-module.exports=teachers;
+module.exports={teacherRouter}

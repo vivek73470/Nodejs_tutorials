@@ -1,21 +1,13 @@
-const {Router}= require("express");
+const express = require("express")
+const studentRouter = express.Router()
 
-const student = Router();
+studentRouter.get("/",(req,res)=>{
+    res.send("All students")
+})
 
-student.post("/create",(req,res)=>{
-    res.send("create")
-});
+studentRouter.post("/addstudents",(req,res)=>{
+    console.log(req.body)
+    res.send("added students")
+})
 
-student.put("/update",(req,res)=>{
-    res.send("update")
-});
-
-student.get("/get",(req,res)=>{
-    res.send("get")
-});
-
-student.delete("/delete",(req,res)=>{
-    res.send("delete")
-});
-
-module.exports=student;
+module.exports={studentRouter}
