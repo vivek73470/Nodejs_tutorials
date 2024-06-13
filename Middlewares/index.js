@@ -8,15 +8,15 @@ const fs = require("fs")
 // const{logger}= require("./middleware/logger.middleware")
 // const{addRoll}=require("./middleware/addRoll.middleware")
 
-const{studentRouter}=require("./routes/student.route")
-const{teacherRouter}=require("./routes/teacher.route")
+// const{studentRouter}=require("./routes/student.route")
+// const{teacherRouter}=require("./routes/teacher.route")
 
 
 
 const app = express();
 
-app.use("/students",studentRouter)
-app.use("/teachers",teacherRouter)
+// app.use("/students",studentRouter)
+// app.use("/teachers",teacherRouter)
 
 // app.use(timeLogger)
 
@@ -77,6 +77,26 @@ app.get("/", (req, res) => {
 //    const data = fs.readFileSync("./dummy.txt","utf-8")
 //     res.end(data)
 // })
+
+
+// QUERY 
+app.get("/data", (req, res) => {
+    const data ={
+        bangalore:"25c", 
+        mumbai:"20c",
+        delhi:"19c"
+    }
+   const{city}=req.query
+   console.log(city)
+    res.end(`temperature in ${city} is ${data[city]}`)
+})
+
+//PARAMS
+app.get("/students/:id",(req,res)=>{
+    const Id = req.params.id
+    res.send(`dta of student with id ${Id}`)
+})
+
 
 app.listen(3500, () => {
     console.log("port at 3500")
