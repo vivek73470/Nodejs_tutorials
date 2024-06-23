@@ -1,5 +1,5 @@
 const express = require("express")
-const{HeroModal} = require("../models/Hero.model")
+const HeroModal = require("../models/Hero.model")
 
 const heroRouter = express.Router()
 
@@ -56,7 +56,7 @@ heroRouter.post("/add", async (req, res) => {
         // creating instance using Constructor 
         const hero = new HeroModal(data)
         await hero.save()
-        console.log(hero)
+        console.log(await HeroModal.find())
         res.send("Added data")
     }
     catch (err) {

@@ -1,5 +1,5 @@
 const express = require("express")
-const { connection} = require("./db")
+const { connection} = require("./config/db")
 const{heroRouter} = require("./routes/Hero.route")
 const{villianRoute} = require("./routes/Villian.route")
 

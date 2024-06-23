@@ -1,10 +1,8 @@
 
 const express = require("express")
-const{VillianModal} = require("../models/Villian.model")
+const VillianModal = require("../models/Villian.model")
 
 const villianRoute = express.Router()
-
-
 
 villianRoute.post("/add", async (req, res) => {
     const data = req.body
@@ -12,6 +10,7 @@ villianRoute.post("/add", async (req, res) => {
         // creating instance using Constructor 
         const villian = new VillianModal(data)
         await villian.save()
+        console.log(await VillianModal.find())
         res.send("Added data")
     }
     catch (err) {
@@ -24,3 +23,5 @@ villianRoute.post("/add", async (req, res) => {
 module.exports={
     villianRoute
 }
+
+    
