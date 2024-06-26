@@ -3,8 +3,12 @@ const connection = require("./config/db")
 const userRoute = require("./routes/user.route")
 const noteRoute = require("./routes/note.route")
 const authenticate = require("./middlewares/authenticate.middleware")
+const cors = require("cors")
 
 const app = express();
+app.use(cors({
+    origin:"*"
+}))
 app.use(express.json())
 
 app.get("/", (req, res) => {

@@ -4,7 +4,8 @@ const noteSchema = mongoose.Schema({
     title:String,
     note:String,
     category:String,
-    author:String
+    userID:String
+    // userID:{type: mongoose.Schema.Types.ObjectId}
 })
 
 const NoteModel = mongoose.model("note",noteSchema)

@@ -67,7 +67,8 @@ userRoute.post("/login", async (req, res) => {
         if (user.length > 0) {
             bcrypt.compare(pass, user[0].pass, (err, result) => {
                 if (result) {
-                    const token = jwt.sign({ course: 'backend' }, 'masai');
+                    // const token = jwt.sign({ course: 'backend' }, 'masai');
+                    const token = jwt.sign({userID:user[0]._id }, 'masai');
                     res.send({ "msg": "login successfully", "token": token })
                 }else{
                     res.send("wrong credentilas")
