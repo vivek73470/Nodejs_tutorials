@@ -1,37 +1,77 @@
 import React, { useState } from 'react'
 
 function Register() {
-    const[name,setName]=useState('')
-    const[email,setEmail]=useState('')
-    const[pass,setPass]=useState('')
-    const[age,setAge]=useState('')
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    pass: '',
+    age: '',
+})
+const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData({
+        ...formData,
+        [name]: value
+    })
+}
 
-    const handleSubmit =()=>{
-        const payload = {
-            name,
-            email,
-            pass,
-            age
+const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+        const res = await fetch("http://localhost:4500/users/register", {
+            method: "POST",
+            body: JSON.stringify(formData),
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
         }
-       fetch("http://localhost:4500/users/register",{
-        method:"POST",
-        body:JSON.stringify(payload),
-        headers:{
-            "Content-Type":"application/json"
-        }
-       }).then(res=>res.json())
-       .then(res=>console.log(res))
-       .catch(err=>console.log(err))
+        let data = await res.json()
+        console.log(data)
+        setFormData({
+            name: '',
+            email: '',
+            pass: '',
+            age: '',
+        });
     }
-  return (
-    <>
-    <div>Register</div>
-    <input type="text"  placeholder='enter name' value={name} onChange={(e)=>setName(e.target.value)}/>
-    <input type="email"  placeholder='enter email' value={email} onChange={(e)=>setEmail(e.target.value)}/>
-    <input type="password"  placeholder='enter password' value={pass} onChange={(e)=>setPass(e.target.value)}/>
-    <input type="text"  placeholder='enter age' value={age} onChange={(e)=>setAge(e.target.value)}/>
-    <button onClick={handleSubmit}>Submit</button>
-    </>
+    catch (err) {
+        console.log(err)
+    }
+}
+    return (
+      <div>
+          <h4>Register</h4>
+          <form onSubmit={handleSubmit}>
+              <input type="text"
+                  name="name"
+                  placeholder='enter name'
+                  value={formData.name}
+                  onChange={handleChange}
+              />
+              <input type="email"
+                  name="email"
+                  placeholder='enter email'
+                  value={formData.email}
+                  onChange={handleChange}
+              />
+              <input type="password"
+                  name="pass"
+                  placeholder='enter password'
+                  value={formData.pass}
+                  onChange={handleChange}
+              />
+              <input type="text"
+                  name="age"
+                  placeholder='enter age'
+                  value={formData.age}
+                  onChange={handleChange}
+              />
+              <input type="submit" />
+          </form>
+      </div>
   )
 }
 

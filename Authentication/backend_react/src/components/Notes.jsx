@@ -1,32 +1,37 @@
 import React, { useEffect, useState } from 'react'
 
 function AllNote() {
+    const [Notes, setNotes] = useState([])
 
     useEffect(() => {
-        fetch("http://localhost:4500/notes", {
-            headers: {
-                "Authorization": localStorage.getItem("token")
-            }
-        })
-        .then(res => {
-            console.log("Response from server:", res);
-            return res.json();
-        })
-        .then(data => {
-            console.log("JSON Parsed Data:", data);
-        })
-        .catch(err => {
-            console.error("Fetch error:", err);
-        });
-    }, []);
-    
+        fetchNotes();
+    }, [])
 
-  return (
-    <>
-    <div>All notes are in console</div>
- 
-    </>
-  )
+    const fetchNotes = async () => {
+        try {
+            const res = await fetch("http://localhost:4500/notes", {
+                headers: {
+                    "Authorization": localStorage.getItem("token")
+                }
+            })
+            if (!res.ok) {
+                throw new Error('Network response was not ok');
+            }
+            let data = res.json()
+            console.log("all notes", data)
+            setNotes(Notes)
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+
+    return (
+        <>
+            <div>All notes are in console</div>
+
+        </>
+    )
 }
 
 export default AllNote
