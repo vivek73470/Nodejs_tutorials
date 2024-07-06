@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react'
 
 function AllNote() {
-    const [Notes, setNotes] = useState([])
+    const [notes, setNotes] = useState([])
 
     useEffect(() => {
         fetchNotes();
-    }, [])
+    },[])
 
     const fetchNotes = async () => {
         try {
@@ -17,20 +17,28 @@ function AllNote() {
             if (!res.ok) {
                 throw new Error('Network response was not ok');
             }
-            let data = res.json()
+            let data =await res.json()
             console.log("all notes", data)
-            setNotes(Notes)
+            setNotes(data)
         } catch (err) {
             console.log(err)
         }
     }
 
-
     return (
-        <>
-            <div>All notes are in console</div>
-
-        </>
+     <>
+     <h3>All notes</h3>
+     <div>
+        {notes.length>0 && notes.map((elem)=>(
+             <div key={elem._id}>
+              <p>{elem.title}</p>
+              <p>{elem.note}</p>
+              <p>{elem.category}</p>
+            </div>
+        ))}
+     </div>
+     </>
+    
     )
 }
 
