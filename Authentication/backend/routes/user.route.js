@@ -25,16 +25,17 @@ userRoute.post("/register", async (req, res) => {
         bcrypt.hash(pass, 5, async (err, secure_password) => {
             if (err) {
                 console.log(err)
+                return res.send(500).json({ message: "Error hashing password" })
             } else {
                 const user = new UserModel({ email, name, pass: secure_password, age })
                 await user.save();
-                res.send("registerd")
+                return res.status(200).json({ message: 'Registered' });
             }
         });
 
     } catch (err) {
-        console.log("error in the user")
         console.log(err)
+        return res.status(500).json({ message: 'Error while registering user' });
     }
 })
 
@@ -63,20 +64,26 @@ userRoute.post("/login", async (req, res) => {
     const { email, pass } = req.body
     try {
         const user = await UserModel.find({ email })
-        console.log(user)
+        if (!user) {
+            return res.status(400).json({ message: "Wrong credentials" });
+        }
         if (user.length > 0) {
             bcrypt.compare(pass, user[0].pass, (err, result) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json({ message: "Internal server error" });
+                }
                 if (result) {
                     // const token = jwt.sign({ course: 'backend' }, 'masai');
                     const token = jwt.sign({userID:user[0]._id }, 'masai');
-                    res.send({ "msg": "login successfully", "token": token })
+                    return res.status(200).json({ message: "Login successfully", token: token });
                 }else{
-                    res.send("wrong credentilas")
+                    return res.status(401).json({ message: "Wrong credentials" });
                 }
             });
         }
         else {
-            res.send("wrong credentials")
+            return res.send("wrong credentials")
         }
     } catch (err) {
         res.send("something wrong")

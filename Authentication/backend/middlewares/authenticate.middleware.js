@@ -14,7 +14,7 @@ const authenticate = (req, res, next) => {
             res.send("please login first")
         }
     } else{
-        res.send("please login first")
+        res.status(401).send("Authentication token is required");
     }
 }
 
