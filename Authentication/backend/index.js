@@ -1,56 +1,34 @@
-const express = require("express")
-const connection = require("./config/db")
-const userRoute = require("./routes/user.route")
-const noteRoute = require("./routes/note.route")
-const authenticate = require("./middlewares/authenticate.middleware")
+const express = require("express");
+const studentRoute = require("./route/student.route")
+const userRoute = require("./route/user.route")
+const noteRoute = require("./route/note.route")
+const authenticate = require('./middleware/authenticate.middleware')
+const connection = require('./config/db')
 const cors = require("cors")
 
+
+require('dotenv').config()
+
 const app = express();
+app.use(express.json());
 app.use(cors({
     origin:"*"
 }))
-app.use(express.json())
 
-app.get("/", (req, res) => {
-    res.send("welcome")
-})
+app.use("/student", studentRoute)
+app.use("/user", userRoute)
 
-app.use("/users",userRoute)
 app.use(authenticate)
-app.use("/notes",noteRoute)
+app.use("/note", noteRoute)
 
 
-// app.get("/data", (req, res) => {
-//     const token = req.headers.authorization
-//     jwt.verify(token, 'masai', (err, decoded) => {
-//         if (err) {
-//             res.send("invalid token")
-//             console.log(err)
-//         } else {
-//             res.send("data..")
-//         }
-//     });
 
-// })
-
-// app.get("/cart", (req, res) => {
-//     const token = req.query.token
-//     if (token === "abc123") {
-//         res.send("data..")
-
-//     } else {
-//         res.send("login first")
-//     }
-// })
-
-
-app.listen(4500, async () => {
+app.listen(process.env.port, async () => {
     try {
         await connection
         console.log("connected to db")
     } catch (err) {
-        console.log("trouble connecting to db")
         console.log(err)
     }
-    console.log("running at 4500")
+    console.log(`running at port ${process.env.port}`)
 })
